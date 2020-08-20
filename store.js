@@ -1,46 +1,3 @@
-/**
- * This is an example of store
- * @param {function} reducer pure function to update the state based on action
- */
-function createStore(reducer) {
-
-  let state;
-  // to listen to the changes
-  let listeners = [];
-
-  /**
-   * Get current state
-   * @returns {Object} current state
-   */
-  const getState = () => state
-
-  /**
-   * Add list of listeners.
-   * @param {function} callback function to be called when state is changed
-   * @returns {function} unsubscribe function to remove the listener
-   */
-  const subscribe = (callback) => {
-    listeners.push(callback)
-
-    return () => listeners.filter(listener => listener !== callback)
-  }
-
-  /**
-   * Update state when action is performed and invoke the listeners
-   * @param {Object} action
-   */
-  const dispatch = (action) => {
-    state = reducer(state, action)
-    listeners.forEach(listener => listener())
-  }
-
-  return {
-    getState,
-    subscribe,
-    dispatch
-  }
-}
-
 // App code
 const ADD_TODO = 'ADD_TODO'
 const REMOVE_TODO = 'REMOVE_TODO'
@@ -126,16 +83,11 @@ const goals = (state = [], action) => {
   }
 }
 
-// root reducer
-function app(state = {}, action) {
-  return {
-    todos: todos(state.todos, action),
-    goals: goals(state.goals, action)
-  }
-}
-
 // Use of store
-const store = createStore(app)
+const store = Redux.createStore(Redux.combineReducers({
+  todos,
+  goals
+}))
 
 const unsubscribe = store.subscribe(() => {
   const { todos, goals } = store.getState()

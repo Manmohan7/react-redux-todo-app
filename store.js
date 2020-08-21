@@ -4,6 +4,7 @@ const REMOVE_TODO = 'REMOVE_TODO'
 const TOGGLE_TODO = 'TOGGLE_TODO'
 const ADD_GOAL = 'ADD_GOAL'
 const REMOVE_GOAL = 'REMOVE_GOAL'
+const RECEIVE_DATA = 'RECEIVE_DATA'
 
 function addTodoAction(todo) {
   return {
@@ -40,6 +41,13 @@ function removeGoalAction(id) {
   }
 }
 
+function receiveData(goals, todos) {
+  return {
+    type: RECEIVE_DATA,
+    todos,
+    goals
+  }
+}
 
 /**
  * Pure function to update the state of todos based on action.
@@ -56,9 +64,12 @@ const todos = (state = [], action) => {
 
     case TOGGLE_TODO:
       return state.map(todo => todo.id === action.id
-        ? Object.assign({}, todo, { completed: !todo.completed })
+        ? Object.assign({}, todo, { complete: !todo.complete })
         : todo
       )
+
+    case RECEIVE_DATA:
+      return action.todos
 
     default:
       return state
@@ -77,6 +88,19 @@ const goals = (state = [], action) => {
 
     case REMOVE_GOAL:
       return state.filter(goal => goal.id !== action.id)
+
+    case RECEIVE_DATA:
+      return action.goals
+
+    default:
+      return state
+  }
+}
+
+const loading = (state = true, action) => {
+  switch (action.type) {
+    case RECEIVE_DATA:
+      return false
 
     default:
       return state
@@ -113,7 +137,8 @@ const logger = (store) => (next) => (action) => {
 // Use of store
 const store = Redux.createStore(Redux.combineReducers({
   todos,
-  goals
+  goals,
+  loading,
 }), Redux.applyMiddleware(checker, logger))
 
 function generateId() {

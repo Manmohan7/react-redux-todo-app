@@ -5,7 +5,7 @@ function List(props) {
         <li key={item.id}>
           <span
             onClick={() => props.toggleItem && props.toggleItem(item)}
-            style={{textDecoration: item.completed ? 'line-through' : 'none'}}
+            style={{textDecoration: item.complete ? 'line-through' : 'none'}}
           >
             {item.name}
           </span>
@@ -71,7 +71,7 @@ class Todos extends React.Component {
     this.props.store.dispatch(addTodoAction({
       id: generateId(),
       name,
-      completed: false
+      complete: false
     }))
   }
 
@@ -112,12 +112,22 @@ class App extends React.Component {
     const { store } = this.props
 
     store.subscribe(() => this.forceUpdate())
+
+    Promise.all([API.fetchGoals(), API.fetchTodos()])
+    .then(([goals, todos]) => {
+      store.dispatch(receiveData(goals, todos))
+    })
   }
 
   render() {
     const { store } = this.props
-    const { todos, goals } = store.getState()
+    const { todos, goals, loading } = store.getState()
 
+    if(loading) {
+      return (
+        <h3>Loading</h3>
+      )
+    }
 
     return (
       <div>

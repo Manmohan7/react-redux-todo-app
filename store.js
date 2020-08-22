@@ -106,6 +106,15 @@ const handleDeleteGoal = (goal) => (dispatch) => {
     })
 }
 
+const handleInitialData = () => (dispatch) => {
+  return Promise.all([
+    API.fetchGoals(),
+    API.fetchTodos()
+  ])
+    .then(([goals, todos]) => {
+      dispatch(receiveData(goals, todos))
+    })
+}
 
 /**
  * Pure function to update the state of todos based on action.

@@ -49,6 +49,64 @@ function receiveData(goals, todos) {
   }
 }
 
+function handleAddTodo(name, callback) {
+  return (dispatch) => {
+
+    return API.saveTodo(name)
+      .then((todo) => {
+        dispatch(addTodoAction(todo))
+        callback()
+      })
+      .catch(() => alert('Error occurred Try again.'))
+  }
+}
+
+function handleDeleteTodo(todo) {
+  return (dispatch) => {
+    dispatch(removeTodoAction(todo.id))
+
+    return API.deleteTodo(todo.id)
+      .catch(() => {
+        dispatch(addTodoAction(todo))
+        alert('Error Occurred. Try again')
+      })
+  }
+}
+
+function handleTodoToggle(id) {
+  return (dispatch) => {
+    dispatch(toggleTodoAction(id))
+
+    return API.saveTodoToggle(id)
+      .catch(() => {
+        dispatch(toggleTodoAction(id))
+        alert('Error occurred. Try again')
+      })
+  }
+}
+
+// We are not using optimistic approach here
+const handleAddGoal = (name, callback) => (dispatch) => {
+  API.saveGoal(name)
+    .then((goal) => {
+      dispatch(addGoalAction(goal))
+      callback()
+    })
+    .catch(() => alert('Error occurred. Try again'))
+}
+
+// We are using optimistic approach here
+const handleDeleteGoal = (goal) => (dispatch) => {
+  dispatch(removeGoalAction(goal.id))
+
+  return API.deleteGoal(goal.id)
+    .catch(() => {
+      dispatch(addGoalAction(goal))
+      alert('Error occurred. Try again')
+    })
+}
+
+
 /**
  * Pure function to update the state of todos based on action.
  * @param {array} state current state
@@ -139,7 +197,7 @@ const store = Redux.createStore(Redux.combineReducers({
   todos,
   goals,
   loading,
-}), Redux.applyMiddleware(checker, logger))
+}), Redux.applyMiddleware(ReduxThunk.default, checker, logger))
 
 function generateId() {
   return Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);

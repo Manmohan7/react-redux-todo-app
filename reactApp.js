@@ -25,22 +25,14 @@ class Goals extends React.Component {
   addItem = (e) => {
     e.preventDefault()
 
-    API.saveGoal(this.input.value)
-      .then((goal) => {
-        this.props.store.dispatch(addGoalAction(goal))
-        this.input.value = ''
-      })
-      .catch(() => alert('Error occurred. Try again.'))
+    this.props.store.dispatch(handleAddGoal(
+      this.input.value,
+      () => this.input.value = ''
+    ))
   }
 
   removeItem = (goal) => {
-    this.props.store.dispatch(removeGoalAction(goal.id))
-
-    API.deleteGoal(goal.id)
-      .catch(() => {
-        this.props.store.dispatch(addGoalAction(goal))
-        alert('Error occurred. Try again.')
-      })
+    this.props.store.dispatch(handleDeleteGoal(goal))
   }
 
   render() {
@@ -70,32 +62,18 @@ class Todos extends React.Component {
   addItem = (e) => {
     e.preventDefault()
 
-    API.saveTodo(this.input.value)
-      .then((todo) => {
-        this.props.store.dispatch(addTodoAction(todo))
-        this.input.value = ''
-      })
-      .catch(() => alert('Error occurred. Try again.'))
+    this.props.store.dispatch(handleAddTodo(
+      this.input.value,
+      () => this.input.value = ''
+    ))
   }
 
   removeItem = (todo) => {
-    this.props.store.dispatch(removeTodoAction(todo.id))
-
-    API.deleteTodo(todo.id)
-      .catch(() => {
-        this.props.store.dispatch(addTodoAction(todo))
-        alert('Error occurred. Try again.')
-      })
+    this.props.store.dispatch(handleDeleteTodo(todo))
   }
 
   toggleItem = (todo) => {
-    this.props.store.dispatch(toggleTodoAction(todo.id))
-
-    API.saveTodoToggle(todo.id)
-      .catch(() => {
-        this.props.store.dispatch(toggleTodoAction(todo.id))
-        alert('Error occurred. Try again.')
-      })
+    this.props.store.dispatch(handleTodoToggle(todo.id))
   }
 
   render() {

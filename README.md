@@ -1,12 +1,18 @@
 # To-Do Goals Project
 
-This repo is a code-along project for the React & Redux Course of the [React Nanodegree program](https://www.udacity.com/course/react-nanodegree--nd019).
-Parent reference of this repo - https://github.com/udacity/reactnd-redux-todos-goals
-Most of the commits in this repository correspond to videos in the program.
+This app helps in sorting daily to-dos and goals. 
+
+It is built using React through CDN.
+
+## Working
+
+See this app in action [here](https://manmohan7.github.io/react-redux-todo-app/)
 
 ## Project Setup
 
-1. Clone the Project - git clone https://github.com/udacity/reactnd-redux-todos-goals.git
-2. Go into the directory where the project now lives - `cd reactnd-redux-todos-goals`
-3. Install the dependencies - `npm install`
-4. Start the app - `npm start`
+* clone the repo `https://github.com/Manmohan7/react-redux-todo-app.git`
+* install dependencies with `npm install`
+
+## Development Server
+
+Simply run the index.html file on your browser.

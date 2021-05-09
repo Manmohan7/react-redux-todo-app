@@ -1,7 +1,7 @@
 # To-Do Goals Project
 
 This repo is a code-along project for the React & Redux Course of the [React Nanodegree program](https://www.udacity.com/course/react-nanodegree--nd019).
-
+Parent reference of this repo - https://github.com/udacity/reactnd-redux-todos-goals
 Most of the commits in this repository correspond to videos in the program.
 
 ## Project Setup
